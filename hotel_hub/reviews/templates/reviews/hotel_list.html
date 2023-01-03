@@ -1,0 +1,92 @@
+{% extends 'reviews/base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <p class="float-right">
+    <a href="{% url 'hotels:add' %}" class="btn btn-primary">Add</a>
+  </p>
+  <h1>Hotels</h1>
+  <div id="hotels-list">
+    <div class="accordion" id="hotelsAccordion">
+      {% for hotel, reviews in hotels_dict.items %}
+      <div class="card clickable-card" data-toggle="collapse" data-target="#collapse{{ forloop.counter }}"
+        aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
+        <div class="card-header" id="heading{{ forloop.counter }}">
+          <h5 class="mb-0">
+            <button class="btn btn-link" type="button" data-toggle="collapse"
+              data-target="#collapse{{ forloop.counter }}" aria-expanded="false"
+              aria-controls="collapse{{ forloop.counter }}">
+              {{ hotel.title }} - {{ hotel.city }}
+            </button>
+          </h5>
+        </div>
+        <div id="collapse{{ forloop.counter }}" class="collapse" aria-labelledby="heading{{ forloop.counter }}"
+          data-parent="#hotelsAccordion">
+          <div class="card-body">
+            <p>{{ hotel.description }}</p>
+            {% if reviews %}
+            <h6>Reviews:</h6>
+            <ul>
+              
+              {% for review in reviews %}
+              <li>{{ review.comment }} - {{ review.rating }}/5</li>
+              {% endfor %}
+              {% else %}
+              <h6>There are no reviews for this hotel yet.</h6>
+              
+            </ul>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script>
+  // Get the search input and button elements
+  var searchInput = document.getElementById('searchInput');
+  var searchButton = document.getElementById('searchButton');
+
+  // Check if the q URL parameter exists
+  var query = new URL(window.location.href).searchParams.get('q');
+  if (query) {
+    // Set the initial value of the search input to the q parameter value
+    searchInput.value = query;
+    filterHotelsList(query);
+  } else {
+    // Add an event listener to the search button to handle clicks
+    searchButton.addEventListener('click', function () {
+      // Get the search query from the search input
+      var query = searchInput.value;
+
+      // Use the search query to filter the hotels list
+      filterHotelsList(query);
+    });
+
+  }
+
+
+  // Function to filter the hotels list based on the search query
+  function filterHotelsList(query) {
+    // Get all the hotels in the list
+    var hotels = document.querySelectorAll('.card .card-header');
+
+    // Loop through each hotel and hide those that don't match the search query
+    hotels.forEach(function (hotel) {
+      if (!hotel.textContent.toLowerCase().includes(query.toLowerCase())) {
+        hotel.parentElement.style.display = 'none';
+      } else {
+        hotel.parentElement.style.display = 'block';
+      }
+    });
+  }
+</script>
+<style>
+  .clickable-card:hover {
+    cursor: pointer;
+  }
+</style>
+{% endblock %}
