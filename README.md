@@ -58,3 +58,36 @@ This will prompt you to enter username, email and password for the superuser. Af
 ```
 http://127.0.0.1:8000/admin
 ```
+
+## Populating the database with sample data
+In order to properly test the website functionalities you can populate the database with sample data. First run the django project shell by using this command:
+```
+python manage.py shell
+```
+After running the shell. Paste the following script:
+```
+from hotels.models import Hotel
+from reviews.models import Review
+import random
+import datetime
+import lorem
+
+# Create the hotels and save them to the database
+hotels = [    Hotel(title='The Ritz', city='London', description='Luxury hotel in the heart of London'),    Hotel(title='The Grand Hotel', city='Paris', description='Luxury hotel in the heart of Paris'),    Hotel(title='The Plaza', city='New York', description='Luxury hotel in the heart of New York City'),    Hotel(title='The Grand Hyatt', city='Tokyo', description='Luxury hotel in the heart of Tokyo'),    Hotel(title='The Mandarin Oriental', city='Bangkok', description='Luxury hotel in the heart of Bangkok'),    Hotel(title='The Four Seasons', city='Sydney', description='Luxury hotel in the heart of Sydney'),    Hotel(title='The Ritz-Carlton', city='Dubai', description='Luxury hotel in the heart of Dubai'),    Hotel(title='The Fairmont', city='San Francisco', description='Luxury hotel in the heart of San Francisco'),    Hotel(title='The InterContinental', city='Hong Kong', description='Luxury hotel in the heart of Hong Kong'),]
+Hotel.objects.bulk_create(hotels)
+hotel_titles = [    'The Ritz', 'The Grand Hotel', 'The Plaza', 'The Grand Hyatt',    'The Mandarin Oriental', 'The Four Seasons', 'The Ritz-Carlton',    'The Fairmont', 'The InterContinental']
+# Create the reviews
+names = ['Alice', 'Bob', 'Charlie', 'David', 'Eve', 'Frank', 'Gary', 'Hannah']
+
+for title in hotel_titles:
+    hotel = Hotel.objects.get(title=title)
+    for i in range(5):
+        user = random.choice(names)
+        comment = lorem.paragraph()
+        rating = random.randint(1, 5)
+        days_offset = random.randint(0, 7)
+        publish_date = datetime.datetime.now() - datetime.timedelta(days=days_offset)
+        review = Review(hotel=hotel, user=user, comment=comment, rating=rating, publish_date=publish_date)
+        review.save()
+```
+Now you can exit the shell and run the server to see the changes.
