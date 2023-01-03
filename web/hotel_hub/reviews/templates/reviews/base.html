@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Hotel's Hub</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/reviews/styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" id="nav">
+            <a class="navbar-brand" href="{% url 'reviews:review_list' %}">The Hotel's Hub</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'reviews:review_list' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'hotels:hotel_list' %}">Hotels</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search a Hotel" aria-label="Search"
+                        id="searchInput">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="button" id="searchButton">Search</button>
+                </form>
+            </div>
+        </nav>
+        {% block content %}
+        {% endblock %}
+    </div>
+    <div id="sticky-footer">
+        <footer class="bg-light py-3 mt-5 bottom">
+            <div class="container">
+                <p class="text-center">Copyright &copy; 2022 Travel and Hotel Reviews</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

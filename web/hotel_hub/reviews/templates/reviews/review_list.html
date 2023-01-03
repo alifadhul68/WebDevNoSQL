@@ -1,0 +1,82 @@
+{% extends 'reviews/base.html' %}
+{% load my_filters %}
+{% load static %}
+{% block content %}
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-4">Welcome to The Hotel's Hub!</h1>
+        <p class="lead">Here you can find reviews for hotels around the world, as well as write your own reviews to
+            help others plan their travels.</p>
+        <hr class="my-4">
+        <p>Ready to start exploring? Click on the "Hotels" tab above to get started!</p>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h3>Latest Hotel Reviews</h3>
+            <ul class="list-group">
+
+                {% for review in latest_review_list %}
+                <li class="list-group-item">
+                    <p class="float-right text-secondary font-weight-light">Published On: {{ review.publish_date }}
+                    </p>
+                    <div class="review-rating">
+                        {% for i in review.rating|get_range %}
+                        <span class="star">&#9733;</span>
+                        {% endfor %}
+                    </div>
+                    <h5>{{ review.hotel.title }}</h5>
+                    <h6 class="text-secondary font-weight-light">By: {{ review.user }}</h6>
+                    <p>{{ review.comment }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h3>Write a Review</h3>
+            <form action="{% url 'reviews:review_create' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="hotel">Hotel</label>
+                    <select class="form-control" id="hotel" name="hotel" required>
+                        <option value="" disabled selected>Select your option</option>
+                        {% for hotel in hotels %}
+                        <option value="{{ hotel.id }}">{{ hotel.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="user">User</label>
+                    <input type="text" class="form-control" id="user" name="user" placeholder="Enter your name"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label for="rating">Rating</label>
+                    <select class="form-control" id="rating" name="rating" required>
+                        <option value="" disabled selected>Select your option</option>
+                        {% for rating_choice in rating_choices %}
+                        <option value="{{ rating_choice.0 }}">{{ rating_choice.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="comment">Comment</label>
+                    <textarea class="form-control" id="comment" name="comment" rows="3"
+                        placeholder="Write your review here" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Review</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    const searchButton = document.getElementById('searchButton');
+    const searchInput = document.getElementById('searchInput');
+
+    searchButton.addEventListener('click', () => {
+        const searchQuery = searchInput.value;
+        window.location.href = `/hotels/?q=${searchQuery}`;
+    });
+</script>
+{% endblock %}
