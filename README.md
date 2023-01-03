@@ -48,3 +48,13 @@ Now the server should be up and running. It can be accessed by entering the loca
 ```
 http://127.0.0.1:8000/
 ```
+
+## Creating the superuser
+In order to access the admin site. A superuser must be created first. The superuser is created by using this command:
+```
+python manage.py createsuperuser
+```
+This will prompt you to enter username, email and password for the superuser. After creating the superuser. The admin site can be accessed by entering this link:
+```
+http://127.0.0.1:8000/admin
+```
