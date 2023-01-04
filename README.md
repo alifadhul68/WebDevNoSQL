@@ -34,7 +34,7 @@ python -m pip install -r requirements.txt
 After running all of these commands the virtual environment is now ready to run the django server.
 
 ## Running the server
-Before running the server it is mandatory need to migrate the models into the MongoDB server by changing the directory to the extracted path then running these commands:
+Before running the server it is mandatory to migrate the models into the MongoDB server by changing the directory to the extracted path then running these commands:
 ```
 cd hotel_hub
 python manage.py makemigrations
